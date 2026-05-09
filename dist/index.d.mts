@@ -1,10 +1,10 @@
-interface ScanResult {
-    data: string;
-    format: string;
+interface DecoderOptions {
+    threshold?: number;
+    tryHarder?: boolean;
 }
 /**
- * Decodes high-density QR codes (Version 40) from an ImageBitmap or Canvas
+ * Automatically pre-processes and decodes high-density QR codes.
  */
-declare function decodeDenseQR(source: ImageBitmap | HTMLCanvasElement | HTMLImageElement): Promise<string | null>;
+declare function decodeDenseQR(source: ImageBitmap | HTMLCanvasElement | HTMLImageElement | ImageData, options?: DecoderOptions): Promise<string | null>;
 
-export { type ScanResult, decodeDenseQR };
+export { type DecoderOptions, decodeDenseQR };

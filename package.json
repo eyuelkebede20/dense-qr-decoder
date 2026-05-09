@@ -1,15 +1,22 @@
 {
   "name": "dense-qr-decoder",
-  "version": "1.0.2",
-  "description": "High-density QR code decoder using ZBar-WASM",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "version": "1.0.1",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean --no-external @undecaf/barcode-detector-polyfill @undecaf/zbar-wasm",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

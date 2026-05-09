@@ -1,6 +1,6 @@
 {
   "name": "dense-qr-decoder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "High-density QR code decoder using ZBar-WASM",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

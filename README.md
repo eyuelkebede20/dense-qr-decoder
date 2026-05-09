@@ -1,12 +1,12 @@
 # dense-qr-decoder
 
-A high-density QR code decoder built on ZBar compiled to WebAssembly. Designed for dense Version 40 QR codes and real-world use cases like national identity card scanning.
+A high-density QR code decoder optimized for dense Version 40 QR codes and real-world use cases like national identity card scanning. **No preprocessing needed** — just pass an image and get results.
 
 ## Why use this package?
 
-- Optimized for dense QR codes where modules are very small and standard JavaScript decoders struggle.
-- Uses the ZBar engine via WASM for stronger edge detection and timing pattern alignment.
-- Works in browser environments and Node.js with raw image data.
+- **Automatic preprocessing** — grayscale conversion and thresholding happen internally.
+- **Works out of the box** — supports ImageBitmap, HTMLCanvasElement, HTMLImageElement, and ImageData.
+- **Optimized for dense codes** — superior edge detection for small QR modules that standard decoders miss.
 
 ## Installation
 
@@ -16,62 +16,53 @@ npm install dense-qr-decoder
 
 ## Quick Start
 
-### Browser
+```ts
+import { decodeDenseQR } from "dense-qr-decoder";
 
-The decoder accepts:
+// Just pass the image. No preprocessing needed!
+const result = await decodeDenseQR(imageElement);
+
+if (result) {
+  console.log("Success:", result);
+}
+```
+
+That's it. The decoder handles:
+
+- Converting to grayscale
+- Thresholding to binary
+- Detecting and decoding the QR code
+
+## Supported Input Types
 
 - `ImageBitmap`
 - `HTMLCanvasElement`
 - `HTMLImageElement`
 - `ImageData`
 
-```ts
-import { decodeDenseQR } from "dense-qr-decoder";
+## Options
 
-async function scanFile(file: File) {
-  const bitmap = await createImageBitmap(file);
-  const result = await decodeDenseQR(bitmap);
-
-  if (result) {
-    console.log("Decoded data:", result);
-  } else {
-    console.log("No QR code detected.");
-  }
-}
-```
-
-### Node.js
-
-For Node, provide raw pixel data or a canvas-like image source. Preprocessing with `sharp` is recommended for dense codes.
+You can customize the threshold for edge cases:
 
 ```ts
-import { decodeDenseQR } from "dense-qr-decoder";
-import sharp from "sharp";
-
-async function decodeImage(path: string) {
-  const { data, info } = await sharp(path).grayscale().threshold(128).raw().toBuffer({ resolveWithObject: true });
-
-  const result = await decodeDenseQR({
-    data: new Uint8ClampedArray(data),
-    width: info.width,
-    height: info.height,
-  } as any);
-
-  return result;
-}
+const result = await decodeDenseQR(image, { threshold: 150 });
 ```
 
-## Usage notes
+- `threshold`: 0–255 (default: 128). Adjust if lighting is poor or contrast is unusual.
+- `tryHarder`: Boolean (default: false). Enable for more aggressive scanning.
 
-- Keep the QR code as flat as possible. Perspective distortion hurts dense code decoding.
-- High contrast helps. Convert to grayscale or threshold images when backgrounds are colored.
-- Capture the code at high resolution. Dense QR codes need enough pixels per module.
+## Tips
+
+- **Perspective**: Keep the QR code as flat as possible. Keystone distortion reduces accuracy.
+- **Lighting**: Ensure clear contrast between the QR code and background.
+- **Resolution**: Capture the QR code at adequate resolution—dense codes need sufficient pixels per module.
 
 ## API
 
-### `decodeDenseQR(source)`
+### `decodeDenseQR(source, options?)`
 
 - `source`: `ImageBitmap | HTMLCanvasElement | HTMLImageElement | ImageData`
+- `options`: `{ threshold?: number; tryHarder?: boolean }`
 - Returns: `Promise<string | null>`
 
 Resolves to the decoded string when a QR code is found, or `null` when the code cannot be detected.

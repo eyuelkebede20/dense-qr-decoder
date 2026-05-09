@@ -6,7 +6,6 @@ export default defineConfig({
   dts: true,
   clean: true,
   minify: true, // Optional: makes your package smaller
-  noExternal: ["@undecaf/zbar-wasm"],
   outExtension({ format }) {
     return {
       js: format === "cjs" ? ".cjs" : ".js",

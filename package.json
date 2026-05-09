@@ -16,12 +16,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --clean --no-external @undecaf/barcode-detector-polyfill @undecaf/zbar-wasm",
+    "build": "tsup",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@undecaf/barcode-detector-polyfill": "^0.9.23",
-    "@undecaf/zbar-wasm": "^0.11.0"
+    "@undecaf/zbar-wasm": "^0.11.0",
+    "sharp": "^0.32.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

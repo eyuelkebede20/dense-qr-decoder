@@ -3,14 +3,14 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"] /* Add DOM here */,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "ignoreDeprecations": "6.0"
+    "allowSyntheticDefaultImports": true
+    /* baseUrl removed to stop the deprecation error */
   },
   "include": ["src"]
 }
